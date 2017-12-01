@@ -4,8 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.mongodb.BasicDBList;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -15,9 +23,9 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 
 public class DatabaseOperations {
-	private static List<String>business_id=new ArrayList<String>(1000);
-	private static List<String>user_id=new ArrayList<String>(1000);
-	private static List<String>user_id_for_review=new ArrayList<String>(1000);
+	private static Set<String>business_id=new HashSet<String>(1000);
+	private static Set<String>user_id=new HashSet<String>(1000);
+	private static Set<String>user_id_for_review=new HashSet<String>(1000);
 	public static void main(String[] args) {
 		try {
 			MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
@@ -42,7 +50,11 @@ public class DatabaseOperations {
 			fstream = new FileInputStream(path);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 			String str1;
-			DBCollection collection =   db.getCollection(collectionName);
+			DBCollection collection = db.getCollection(collectionName);
+			DBCollection testCollection=db.getCollection("testCollection");
+			String inputString = "2016-01-01";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date inputDate = dateFormat.parse(inputString);
 			while ((str1 = br.readLine()) != null)
 			{
 				DBObject bson = (DBObject) JSON.parse(str1);
@@ -52,8 +64,16 @@ public class DatabaseOperations {
 						String res=(String) bson.get("city");
 						if(res.equals("Charlotte"))
 						{
-							business_id.add((String) bson.get("business_id"));
-							collection.insert(bson);
+							BasicDBList category=(BasicDBList) bson.get("categories");
+							for(Object obj:category) {
+								if(String.valueOf(obj).equals("Restaurants"))
+								{
+									business_id.add((String) bson.get("business_id"));
+									collection.insert(bson);
+									break;
+								}
+							}
+							
 						}
 					}
 					if(collectionName=="review1") {
@@ -63,8 +83,12 @@ public class DatabaseOperations {
 						}
 					}
 					if(collectionName=="reviewCharlotte") {
-						if(user_id.contains((String) bson.get("user_id"))){
-							collection.insert(bson);
+						Date dbDate=dateFormat.parse((String) bson.get("date"));
+						if(user_id.contains((String) bson.get("user_id"))&&business_id.contains((String) bson.get("business_id"))){
+							if(dbDate.compareTo(inputDate)<0)
+								collection.insert(bson);
+							else
+								testCollection.insert(bson);
 						}
 					}
 					if(collectionName=="userCharlotte") {
@@ -99,6 +123,9 @@ public class DatabaseOperations {
 		catch (IOException e)
 		{
 			e.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 

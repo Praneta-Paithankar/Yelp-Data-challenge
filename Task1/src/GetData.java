@@ -35,11 +35,6 @@ public class GetData {
 			
 			mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
 			database = mongoClient.getDB("yelp_db");
-			
-			String inputString = "2017-01-01";
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date inputDate = dateFormat.parse(inputString);
-			
 			DBCollection collection =   database.getCollection("reviewCharlotte");
 			//BasicDBObject query=new BasicDBObject("date", new BasicDBObject("$lt",new BasicDBObject("$date","2017-01-01")));
 			DBCursor dbcursor=collection.find();
@@ -48,20 +43,10 @@ public class GetData {
 			while(dbcursor.hasNext()){
 				String reviewString=dbcursor.next().toString();
 				Review review=gson.fromJson(reviewString, Review.class);
-				if(review.getDate().compareTo(inputDate)<0){
-					trainingSet.add(new FilteringInputStructure(review.getUser_id(),review.getBusiness_id(),review.getStars()));	
-				}
-				else
-				{
-					testingSet.add(new FilteringInputStructure(review.getUser_id(),review.getBusiness_id(),review.getStars()));
-				}
-
+				trainingSet.add(new FilteringInputStructure(review.getUser_id(),review.getBusiness_id(),review.getStars()));	
 			}
 			System.out.println("User finished.");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
