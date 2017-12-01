@@ -1,7 +1,9 @@
 package structure;
 
 import java.util.Date;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Review {
 	private String  review_id;
 	private String user_id;

@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Business {
 	private String business_id;
 	private String name;

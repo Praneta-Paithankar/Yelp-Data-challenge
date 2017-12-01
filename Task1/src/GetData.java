@@ -19,7 +19,9 @@ import com.mongodb.MongoClientURI;
 import structure.FilteringInputStructure;
 import structure.Review;
 
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class GetData {
 	private List<FilteringInputStructure> trainingSet;
 	private List<FilteringInputStructure> testingSet;

@@ -21,7 +21,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class DatabaseOperations {
 	private static Set<String>business_id=new HashSet<String>(1000);
 	private static Set<String>user_id=new HashSet<String>(1000);

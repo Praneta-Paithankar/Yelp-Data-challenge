@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class GoodForMeal {
 	private boolean dinner;
     private boolean latenight;

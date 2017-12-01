@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Ambience {
 	private boolean hipster;
 	private boolean classy;

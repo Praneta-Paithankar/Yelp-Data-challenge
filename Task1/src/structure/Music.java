@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Music {
 	private boolean dj;
 	private boolean background_music;

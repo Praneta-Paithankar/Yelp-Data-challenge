@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Hours {
     private String Monday;
     private String Tuesday;

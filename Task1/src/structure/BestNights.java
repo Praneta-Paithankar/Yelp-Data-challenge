@@ -1,5 +1,7 @@
 package structure;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class BestNights {
 	private boolean Monday;
 	private boolean Tuesday;
