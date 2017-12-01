@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.UnknownHostException;
-
+import java.util.ArrayList;
+import java.util.List;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -14,32 +15,26 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 
 public class DatabaseOperations {
+	private static List<String>business_id=new ArrayList<String>(1000);
+	private static List<String>user_id=new ArrayList<String>(1000);
+	private static List<String>user_id_for_review=new ArrayList<String>(1000);
 	public static void main(String[] args) {
 		try {
 			MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
 			DB database = mongoClient.getDB("yelp_db");
-			if(!database.collectionExists("business")) {
-				insert("/Users/praneta/Downloads/dataset/business.json",database,"business");
-			}
-			if(!database.collectionExists("user")) {
-				insert("/Users/praneta/Downloads/dataset/user.json",database,"user");
-
-			}
-			if(!database.collectionExists("review")) {
-				insert("/Users/praneta/Downloads/dataset/review.json",database,"review");
-
-			}
-			if(!database.collectionExists("tip")) {
-				insert("/Users/praneta/Downloads/dataset/tip.json",database,"tip");
-			}
-
+			insert("/Users/praneta/Downloads/dataset/business.json",database,"businessCharlotte");
+			insert("/Users/praneta/Downloads/dataset/review.json",database,"review1");
+			insert("/Users/praneta/Downloads/dataset/user.json",database,"userCharlotte");
+			insert("/Users/praneta/Downloads/dataset/tip.json",database,"tipCharlotte");
+			insert("/Users/praneta/Downloads/dataset/review.json",database,"reviewCharlotte");
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public static void insert(String path, DB db, String collectionName)
+
+	public static void insert(String path, DB db,String collectionName)
 	{
 		FileInputStream fstream = null;
 		try
@@ -52,8 +47,40 @@ public class DatabaseOperations {
 			{
 				DBObject bson = (DBObject) JSON.parse(str1);
 				try
-				{
-					collection.insert(bson);
+				{	
+					if(collectionName == "businessCharlotte") {
+						String res=(String) bson.get("city");
+						if(res.equals("Charlotte"))
+						{
+							business_id.add((String) bson.get("business_id"));
+							collection.insert(bson);
+						}
+					}
+					if(collectionName=="review1") {
+						if(business_id.contains((String) bson.get("business_id"))){
+							user_id.add((String) bson.get("user_id"));
+							collection.insert(bson);
+						}
+					}
+					if(collectionName=="reviewCharlotte") {
+						if(user_id.contains((String) bson.get("user_id"))){
+							collection.insert(bson);
+						}
+					}
+					if(collectionName=="userCharlotte") {
+						int count=(int)bson.get("review_count");
+						if(user_id.contains((String) bson.get("user_id"))&& count >=20){
+							user_id_for_review.add((String) bson.get("user_id"));
+							collection.insert(bson);
+						}
+					}
+					if(collectionName=="tipCharlotte") {
+						if(user_id_for_review.contains((String) bson.get("user_id"))){
+							collection.insert(bson);
+						}
+					}
+
+
 				}
 				catch (MongoException e)
 				{
@@ -73,6 +100,6 @@ public class DatabaseOperations {
 		{
 			e.printStackTrace();
 		}
-
 	}
+
 }
