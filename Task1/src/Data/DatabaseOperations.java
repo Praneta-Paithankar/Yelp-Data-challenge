@@ -72,7 +72,7 @@ public class DatabaseOperations {
 						if(res.equals("Charlotte"))
 						{	
 							int count=(int)bson.get("review_count");
-							if(count>=100)
+							if(count>150)
 							{
 								BasicDBList category=(BasicDBList) bson.get("categories");
 								for(Object obj:category) {
@@ -106,7 +106,7 @@ public class DatabaseOperations {
 					}
 					if(collectionName=="userCharlotte") {
 						int count=(int)bson.get("review_count");
-						if(user_id.contains((String) bson.get("user_id"))&& count >=20){
+						if(user_id.contains((String) bson.get("user_id"))&& count >180){
 							user_id_for_review.add((String) bson.get("user_id"));
 							collection.insert(bson);
 						}
