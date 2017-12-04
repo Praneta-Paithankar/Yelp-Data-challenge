@@ -22,7 +22,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import Data.GetData;
 /*
- * created by Praneta Paithankar(ppaithan)
+ * created by Aishwarya Dhage(adhage) and Praneta Paithankar(ppaithan)
  */
 public class Search {
 	static float total_doc ;

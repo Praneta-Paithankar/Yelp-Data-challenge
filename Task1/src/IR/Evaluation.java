@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 /*
- * created by Praneta Paithankar(ppaithan)
+ * created by Aishwarya Dhage(adhage) and  Praneta Paithankar(ppaithan)
  */
 public class Evaluation {
 	public static void main(String[]args) {

@@ -10,7 +10,9 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
-
+/*
+ * created by Aishwarya Dhage(adhage) and Praneta Paithankar(ppaithan)
+ */
 public class ReviewExtractor {
 	public String getNouneview(List<String> originalReview) {
 		InputStream tokenModelIn = null;
