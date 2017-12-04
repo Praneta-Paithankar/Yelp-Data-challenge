@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+/*
+ * created by Aishwarya Dhage(adhage) and  Praneta Paithankar(ppaithan)
+ */
 public class Evaluation {
 	public static void main(String[]args) {
 		Path csvFile = Paths.get(System.getProperty("user.dir"),"IR.csv");
@@ -57,28 +59,6 @@ public class Evaluation {
 		}
 		int commonRestaurant=0;
 		int totalRestaurant=0;
-		for(String user:userBusinessMap.keySet())
-		{
-			if(groundTruthMap.get(user)!=null) {
-				for(String business_id:userBusinessMap.get(user))
-				{
-					if(groundTruthMap.get(user).contains(business_id))
-					{
-						commonRestaurant+=1;
-					}
-					
-				}
-				totalRestaurant+=groundTruthMap.get(user).size();
-			}
-		}
-		System.out.println("commonRestaurant "+commonRestaurant);
-		System.out.println("totalRestaurant "+totalRestaurant);
-		if(totalRestaurant!=0)
-		{
-			double res = (double) ((double)commonRestaurant/totalRestaurant)*100;
-			
-			System.out.println("HitRate "+ res);
-		}
 		int retrievedDocument=0;
 		int relevantDocument=0;
 		int totalRelevant=0;
@@ -90,12 +70,22 @@ public class Evaluation {
 				{
 					if(groundTruthMap.get(user).contains(business_id))
 					{
+						commonRestaurant+=1;
 						relevantDocument+=1;
 					}
 					
 				}
+				totalRestaurant+=groundTruthMap.get(user).size();
 				totalRelevant+=groundTruthMap.get(user).size();
 			}
+		}
+		System.out.println("commonRestaurant "+commonRestaurant);
+		System.out.println("totalRestaurant "+totalRestaurant);
+		if(totalRestaurant!=0)
+		{
+			double res = (double) ((double)commonRestaurant/totalRestaurant)*100;
+			
+			System.out.println("HitRate "+ res);
 		}
 		System.out.println("Relevant"+relevantDocument);
 		System.out.println("Retrieved"+retrievedDocument);

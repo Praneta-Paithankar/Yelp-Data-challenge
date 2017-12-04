@@ -3,6 +3,7 @@ package IR;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import opennlp.tools.postag.POSModel;
@@ -10,12 +11,15 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
-
+/*
+ * created by Aishwarya Dhage(adhage) and Praneta Paithankar(ppaithan)
+ */
 public class ReviewExtractor {
-	public String getNouneview(List<String> originalReview) {
+	public List<String> getNouneview(List<String> originalReview) {
 		InputStream tokenModelIn = null;
 		InputStream posModelIn = null;
 		String nounReview="";
+		List<String>result=new ArrayList<String>();
 		try {
 
 			tokenModelIn = new FileInputStream("en-token.bin");
@@ -24,6 +28,7 @@ public class ReviewExtractor {
 			posModelIn = new FileInputStream("en-pos-maxent.bin");
 			POSModel posModel = new POSModel(posModelIn);
 			POSTaggerME posTagger = new POSTaggerME(posModel);
+			int count=0;
 			for (String review:originalReview) {
 				String tokens[] = tokenizer.tokenize(review);
 				String tags[] = posTagger.tag(tokens);
@@ -32,6 +37,11 @@ public class ReviewExtractor {
 					if(res.equals("NN")||res.equals("NNP")||res.equals("JJ")) {
 						String adj=tokens[i];
 						nounReview+=adj+" ";
+						count++;
+						if(count==1024){
+								result.add(nounReview);
+								nounReview="";
+						}
 					}
 				}        
 			}
@@ -56,13 +66,14 @@ public class ReviewExtractor {
 				}
 			}
 		}
-		return nounReview;
+		return result;
 	}
 
 	public String getNouneview(String review) {
 		InputStream tokenModelIn = null;
 		InputStream posModelIn = null;
 		String nounReview="";
+		
 		try {
 
 			tokenModelIn = new FileInputStream("en-token.bin");

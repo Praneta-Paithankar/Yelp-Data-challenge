@@ -115,8 +115,8 @@ public class GetData {
 					else {
 						userReviewMap.get(id).add(review.getText());
 					}
-					if(count==100)
-						break;
+//					if(count==100)
+//						break;
 //				}
 			}
 			

@@ -38,7 +38,9 @@ import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.common.RandomUtils;
-
+/*
+ * created by Aishwarya Dhage(adhage) and Praneta Paithankar(ppaithan)
+ */
 
 public class ItemBasedRecommendation  {
 	public static HashMap<String,Long> RuserMap = new HashMap<String,Long>();
