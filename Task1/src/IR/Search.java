@@ -44,20 +44,22 @@ public class Search {
 			TopDocs topDocs;
 			ScoreDoc[] docs ;
 			for (String user_id :users.keySet()) {
-				String nounReview=reviewExtractor.getNouneview(users.get(user_id));
+				List<String> nounReview=reviewExtractor.getNouneview(users.get(user_id));
 				rank=1;
-				if(nounReview != null && !nounReview.isEmpty()) {
-					query = parser.parse(QueryParser.escape(nounReview));
-					topDocs = searcher.search(query, 50);
-					docs = topDocs.scoreDocs;
-					for (int i = 0; i < docs.length; i++) {		
-							Document doc = searcher.doc(docs[i].doc);
-							s=user_id+","+doc.get("DOCNO")+","+rank+","+
-									docs[i].score;
-							rank++;
-							pw.write(s+"\n");
+				for(String nReview:nounReview) {
+					if(nReview != null && !nReview.isEmpty()) {
+						query = parser.parse(QueryParser.escape(nReview));
+						topDocs = searcher.search(query, 100);
+						docs = topDocs.scoreDocs;
+						for (int i = 0; i < docs.length; i++) {		
+								Document doc = searcher.doc(docs[i].doc);
+								s=user_id+","+doc.get("DOCNO")+","+rank+","+
+										docs[i].score;
+								rank++;
+								pw.write(s+"\n");
+							}
 						}
-					}
+				}
 			}
 			pw.close();
 			reader.close();
