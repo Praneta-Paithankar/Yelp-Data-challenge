@@ -41,16 +41,22 @@ import org.apache.mahout.common.RandomUtils;
 
 
 public class ItemBasedRecommendation  {
-	public static HashMap<String,Long> user = new HashMap<String,Long>();
-	public static HashMap<String,Long> business = new HashMap<String,Long>();
-	public static Map<String, Collection<String>> useritem = new HashMap<String, Collection<String>>();
-	public static Map<String, Collection<String>> recomsim = new HashMap<String, Collection<String>>();
-	public static Map<String, Collection<String>> finalrecom = new HashMap<String, Collection<String>>();
+	public static HashMap<String,Long> userMap = new HashMap<String,Long>();
+	public static HashMap<String,Long> businessMap = new HashMap<String,Long>();
+	public static Map<String, Collection<String>> useritemMap = new HashMap<String, Collection<String>>();
+	public static Map<String, Collection<String>> recomsimMap = new HashMap<String, Collection<String>>();
+	//public static HashMap<String,Long> groundTruthMap = new HashMap<String,Long>();
+	public static HashMap<String,Long> newuserMap=new HashMap<String,Long>();
+	public static Map<String, Collection<String>> groundTruthMap = new HashMap<String, Collection<String>>();
 
-	public static void main(String[] args) throws IOException
+	
+	public static void main(String[] args) throws IOException, TasteException
 	{
-		try {
-			convertdata();
+		convertdata();
+		itembasedrecommendation();	
+	}
+	
+	private static void itembasedrecommendation() throws IOException, TasteException {
 			RandomUtils.useTestSeed();
 			BufferedWriter bw = new BufferedWriter(new FileWriter("data/similarity.csv"));
 			BufferedWriter bk = new BufferedWriter(new FileWriter("data/output.csv"));		
@@ -58,139 +64,83 @@ public class ItemBasedRecommendation  {
 			DataModel dm = new FileDataModel(new File("data/userbusinesscode.csv"));
 			//ItemSimilarity sim = new LogLikelihoodSimilarity(dm);
 			//ItemSimilarity sim = new PearsonCorrelationSimilarity(dm);
-		
-			RecommenderBuilder recommenderBuilder=new RecommenderBuilder() {
+			RecommenderBuilder recommenderBuilder=new RecommenderBuilder() 
+			{
 				public Recommender buildRecommender(DataModel dm) throws TasteException{
-					//TanimotoCoefficientSimilarity sim = new TanimotoCoefficientSimilarity(dm);
+					TanimotoCoefficientSimilarity sim = new TanimotoCoefficientSimilarity(dm);
 					//ItemSimilarity sim = new LogLikelihoodSimilarity(dm);
 					//ItemSimilarity sim = new EuclideanDistanceSimilarity(dm);
 					//ItemSimilarity similarity = new GenericUserSimilarity(model);
-					ItemSimilarity sim = new PearsonCorrelationSimilarity(dm);
+					//ItemSimilarity sim = new PearsonCorrelationSimilarity(dm);
 					return  new GenericItemBasedRecommender(dm, sim);
 				}
 			};
-			for(String key:user.keySet())
-{
-			//GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(dm, sim);		
-			Recommender recommender=recommenderBuilder.buildRecommender(dm);
-			List<RecommendedItem>recommendations = recommender.recommend(user.get(key), 2);
-			for(RecommendedItem recommendedItem : recommendations) {
-				String newrecomm=null;
-				for (Entry<String, Long> entry : business.entrySet()) {
-			        if (Objects.equals(recommendedItem.getItemID(), entry.getValue())) {
-			            newrecomm=entry.getKey();
-			            //System.out.println(key+"\t"+newrecomm);
-						Collection<String> newrecomms=recomsim.get(key);
+			for(String key:newuserMap.keySet())
+			{
+				//GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(dm, sim);		
+				Recommender recommender=recommenderBuilder.buildRecommender(dm);
+				List<RecommendedItem>recommendations = recommender.recommend(newuserMap.get(key), 50);
+				for(RecommendedItem recommendedItem : recommendations) 
+				{
+					String newrecomm=null;
+					for (Entry<String, Long> entry : businessMap.entrySet()) 
+					{
+						if (Objects.equals(recommendedItem.getItemID(), entry.getValue())) 
+						{
+							newrecomm=entry.getKey();
+							Collection<String> newrecomms=recomsimMap.get(key);
 							if (newrecomms==null)
 							{
 								newrecomms=new ArrayList<String>();
-								recomsim.put(key, newrecomms);
+								recomsimMap.put(key, newrecomms);
 							}
 							newrecomms.add(newrecomm);
-			        }
-			    }
-				
+						}
+					}	
+				}
 			}
-}
-//			BufferedReader br = new BufferedReader(new FileReader("data/groundTruth.csv"));
 			String line = "";
 			String cvsSplitBy = ",";
-//			while((line = br.readLine()) != null ) 
-//	    		{
-//			String[] items = line.split(cvsSplitBy);
-//			if(finalrecom.containsKey(items[0]))
-//			{
-//				System.out.println(items[0]+"\t"+finalrecom.get(items[0]));
-//			}
 			while((line = br.readLine()) != null ) 
 	    		{ 
 				String[] items = line.split(cvsSplitBy);
-				if(recomsim.containsKey(items[0]))
+				if(recomsimMap.containsKey(items[0]))
 				{
-					bk.write(items[0]+","+recomsim.get(items[0])+"\n");
-					System.out.println(items[0]+"\t"+recomsim.get(items[0]));
+					bk.write(items[0]+","+recomsimMap.get(items[0])+"\n");
+					System.out.println(items[0]+"\t"+recomsimMap.get(items[0]));
 				}
-	    		}
-//			for(String auser:recomsim.keySet())
-//			{
-//				if()
-//				bk.write(auser+","+recomsim.get(auser)+"\n");
-//				System.out.println(auser+"\t"+recomsim.get(auser));
-//			}
-//			int x=1;
-//			for(LongPrimitiveIterator items =(dm.getItemIDs()); items.hasNext();) 
-//			{
-//				long itemId =(long)items.next();
-//			
-//				List<RecommendedItem>recommendations = recommender.recommend(itemId, 5);
-//				for(RecommendedItem recommendation : recommendations) 
-//				{
-//					String pastbusiness = null;
-//					String recommendedbusiness=null;
-//					 for (Entry<String, Long> entry : business.entrySet()) {
-//					        if (Objects.equals(itemId, entry.getValue())) {
-//					            pastbusiness=entry.getKey();
-//					        }
-//					    }
-//					 Long recommendedlongkey=recommendation.getItemID();
-//					 for (Entry<String, Long> entry : business.entrySet()) {
-//					        if (Objects.equals(recommendedlongkey, entry.getValue())) {
-//					            recommendedbusiness=entry.getKey();
-//					        }
-//					    }
-//					 Collection<String> newbussids=recomsim.get(pastbusiness);
-//						if (newbussids==null)
-//						{
-//							newbussids=new ArrayList<String>();
-//							recomsim.put(pastbusiness, newbussids);
-//						}
-//						newbussids.add(recommendedbusiness);
-//					bw.write(pastbusiness+ "," +recommendedbusiness + "," + recommendation.getValue()+"\n");
-//				}
-//				x++;
-//			}
-			RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();        
-		    double score = evaluator.evaluate(recommenderBuilder, null, dm, 0.7, 1.0);    
-		    System.out.println("RMSE: " + score);
-		        
-		        RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();        
-		        IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder, null, dm, null, 10, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 0.7); // evaluate precision recall at 10
-		        
-		    System.out.println("Precision: " + stats.getPrecision());
-		    System.out.println("Recall: " + stats.getRecall());
-		    System.out.println("F1 Score: " + stats.getF1Measure());                
-		    
-
-			bw.close();
-			} catch (IOException e) 
-			{
-				System.out.println("There was an error.");
-				e.printStackTrace();
-			} catch (TasteException e)
-			{
-				System.out.println("There was a Taste Exception");
-				e.printStackTrace();
-			}
-//			recommenditems();
-//			BufferedReader br = new BufferedReader(new FileReader("data/groundTruth.csv"));
-			String line = "";
-			String cvsSplitBy = ",";
-//			while((line = br.readLine()) != null ) 
-//	    		{
-//			String[] items = line.split(cvsSplitBy);
-//			if(finalrecom.containsKey(items[0]))
-//			{
-//				System.out.println(items[0]+"\t"+finalrecom.get(items[0]));
-//			}
-			  
-	    		
-			
-			
+	    		}		
+			evaluation(recommenderBuilder,dm);
+			calculatehitratio();
+			bw.close();	
 	}
-	
+
+	private static void calculatehitratio() {
+		int hitrate=0;
+		int totalbusiness=0;
+		for(String user:recomsimMap.keySet())
+		{
+			if(groundTruthMap.containsKey(user))
+			{
+				for(String abusiness:groundTruthMap.get(user))
+				{
+					if(recomsimMap.get(user).contains(abusiness))
+					{
+						hitrate+=1;
+					}
+				}
+				
+				totalbusiness+=(groundTruthMap.get(user)).size();
+			}
+		}
+		System.out.println(((float)hitrate/totalbusiness)*100);
+		
+	}
+
 	public static void convertdata() throws IOException
 	{	
 		BufferedReader br = new BufferedReader(new FileReader("data/input.csv"));
+		BufferedReader readUsers = new BufferedReader(new FileReader("data/groundTruth.csv"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("data/userbusinesscode.csv"));
 		String line;
 		Long longuserid=(long) 1;
@@ -201,86 +151,83 @@ public class ItemBasedRecommendation  {
 			int rating=Integer.parseInt(values[2]);
 			//check if this business id is present in hashmap
 			//if true den get the long value from hash table and then put in csv file
-			if(business.containsKey(values[1]) && !user.containsKey(values[0])) 
+			if(businessMap.containsKey(values[1]) && !userMap.containsKey(values[0])) 
 			{
-				//long hashCode = values[0].hashCode();
-				user.put( values[0], longuserid);
-				bw.write(longuserid+","+business.get(values[1])+","+values[2]+"\n");
+				userMap.put( values[0], longuserid);
+				bw.write(longuserid+","+businessMap.get(values[1])+","+values[2]+"\n");
 				longuserid++;
 			}
 			//check if this user id  is in hashmap
-			else if(!business.containsKey(values[1]) && user.containsKey(values[0]))
+			else if(!businessMap.containsKey(values[1]) && userMap.containsKey(values[0]))
 			{
-				//long hashCode1 = values[1].hashCode();
-				business.put(values[1], longbussid);
-				bw.write(user.get(values[0])+","+longbussid+","+values[2]+"\n");
+				businessMap.put(values[1], longbussid);
+				bw.write(userMap.get(values[0])+","+longbussid+","+values[2]+"\n");
 				longbussid++;
 			}
-			//
-			else if(!business.containsKey(values[1]) && !user.containsKey(values[0]))
+			//check if both buss. id and user id are not in hashmap
+			else if(!businessMap.containsKey(values[1]) && !userMap.containsKey(values[0]))
 			{
-				business.put(values[1], longbussid);
-				user.put( values[0], longuserid);
+				businessMap.put(values[1], longbussid);
+				userMap.put( values[0], longuserid);
 				bw.write(longuserid+","+longbussid+","+values[2]+"\n");
 				longuserid++;
 				longbussid++;
 			}
-			else if(business.containsKey(values[1]) && user.containsKey(values[0]))
+			else if(businessMap.containsKey(values[1]) && userMap.containsKey(values[0]))
 			{
-				bw.write(user.get(values[0])+","+business.get(values[1])+","+values[2]+"\n");
+				bw.write(userMap.get(values[0])+","+businessMap.get(values[1])+","+values[2]+"\n");
 			}
+			//map user ids with bussiness ids
 			String bussid=values[1];
 			String userid=values[0];
-			Collection<String> bussids=useritem.get(userid);
+			Collection<String> bussids=useritemMap.get(userid);
 			if (bussids==null)
 			{
 				bussids=new ArrayList<String>();
-				useritem.put(userid,bussids);
+				useritemMap.put(userid,bussids);
 			}
 			bussids.add(bussid);
+			
 		}
 		System.out.println("starts");
-//		for(String key:user.keySet())
-//		{
-//			System.out.println(key+"\t"+user.get(key));
-//		}
 		br.close();
 		bw.close();	
-		
-		
-	}
-	
-	public static void recommenditems() throws IOException
-	{
-		BufferedReader br = new BufferedReader(new FileReader("data/similarity.csv"));
-		BufferedWriter bw = new BufferedWriter(new FileWriter("data/output.csv"));
-		
-		
-		
-		for(String auser:user.keySet())
+		while((line = readUsers.readLine()) != null) 
 		{
-		for(String abusiness:useritem.get(auser))
-		{
-			if(recomsim.containsKey(abusiness))
+			String[] values = line.split(",", -1);
+			//groundTruthMap.put(values[0], values[1]);
+			Collection<String> bussids=groundTruthMap.get(values[0]);
+			if (bussids==null)
 			{
-				Collection<String> bussids=finalrecom.get(auser);
-				if(finalrecom.keySet().contains(auser))
-				{
-					//Collection<String> bussids=useritem.get(userid);
-					
-					bussids.addAll(recomsim.get(abusiness));
-				}
-				else
-				{
-					bussids=new ArrayList<String>();
-					finalrecom.put(auser,bussids);
-					bussids.addAll(recomsim.get(abusiness));
-				}
+				bussids=new ArrayList<String>();
+				groundTruthMap.put(values[0],bussids);
+			}
+			bussids.add(values[1]);
+		}
+		readUsers.close();
+		newuserMap.putAll(userMap);
+		for(String a:userMap.keySet())
+		{
+			if(!groundTruthMap.containsKey(a))
+			{
+				newuserMap.remove(a);
 			}
 		}
-		
-		}
+	}
+	
+	private static void evaluation(RecommenderBuilder recommenderBuilder, DataModel dm) throws TasteException 
+	{
+	
+		RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();        
+	    double score = evaluator.evaluate(recommenderBuilder, null, dm, 0.7, 1.0);    
+	    System.out.println("RMSE: " + score);
+	    RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();        
+	    IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder, null, dm, null, 10, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 0.7);
+	    // evaluate precision recall at 10		        
+	    System.out.println("Precision: " + stats.getPrecision());
+	    System.out.println("Recall: " + stats.getRecall());
+	    System.out.println("F1 Score: " + stats.getF1Measure());                
 
-		bw.close();	
+	
 	}
 }
