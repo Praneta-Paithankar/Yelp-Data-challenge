@@ -32,30 +32,23 @@ public class Search {
 			IndexReader reader= DirectoryReader.open(FSDirectory.open(Paths.get(System.getProperty("user.dir"), "index")));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			HashMap<String, List<String>> users = data.getIRUserData();
-
 			searcher.setSimilarity(new BM25Similarity()); 
 			Analyzer analyzer = new StandardAnalyzer();
 			QueryParser parser = new QueryParser("TEXT", analyzer); 
-
 			PrintWriter pw =new PrintWriter(new File("IR.csv"));
-			
 			String s;
 			int rank;
 			Query query ;
 			TopDocs topDocs;
 			ScoreDoc[] docs ;
 			for (String user_id :users.keySet()) {
-			
-				for(String review:users.get(user_id)) {
-
-					String nounReview=reviewExtractor.getNouneview(review);
-					rank=1;
-					if(nounReview != null && !nounReview.isEmpty()) {
-						query = parser.parse(QueryParser.escape(nounReview));
-						topDocs = searcher.search(query, 10);
-						docs = topDocs.scoreDocs;
-						for (int i = 0; i < docs.length; i++) {
-							
+				String nounReview=reviewExtractor.getNouneview(users.get(user_id));
+				rank=1;
+				if(nounReview != null && !nounReview.isEmpty()) {
+					query = parser.parse(QueryParser.escape(nounReview));
+					topDocs = searcher.search(query, 50);
+					docs = topDocs.scoreDocs;
+					for (int i = 0; i < docs.length; i++) {		
 							Document doc = searcher.doc(docs[i].doc);
 							s=user_id+","+doc.get("DOCNO")+","+rank+","+
 									docs[i].score;
@@ -63,16 +56,12 @@ public class Search {
 							pw.write(s+"\n");
 						}
 					}
-					
-				}
 			}
 			pw.close();
-			
 			reader.close();
 			System.out.println("Done");
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 
 		}

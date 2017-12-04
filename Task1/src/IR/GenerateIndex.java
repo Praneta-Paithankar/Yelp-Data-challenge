@@ -1,6 +1,5 @@
 package IR;
 
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class GenerateIndex {
 			IndexWriter indexwriter = new IndexWriter(dir, iwc);
 			
 			for (String business_id : businesses.keySet()) {
-				//String review=reviewExtractor.GetAdjReview(businesses.get(business_id));
 				String review=businesses.get(business_id);
 				review=reviewExtractor.getNouneview(review);
 				indexwriter.addDocument(createDocument(business_id,review));

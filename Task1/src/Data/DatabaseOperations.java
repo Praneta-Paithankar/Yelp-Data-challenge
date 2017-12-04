@@ -30,7 +30,9 @@ import com.mongodb.util.JSON;
 public class DatabaseOperations {
 
 	private  Set<String> business_id= new HashSet<String>();
-	private  Set<String>user_id=new HashSet<String>(1000);
+	private HashMap<String,Integer>user_id=new HashMap<String,Integer>();
+	//private  Set<String>user_id=new HashSet<String>(1000);
+	private Set<String>business_test=new HashSet<String>();
 	private  Set<String>user_id_for_review=new HashSet<String>(1000);
 	public static void main(String[] args) {
 		try {
@@ -42,9 +44,8 @@ public class DatabaseOperations {
 			databaseOperations.insert("/Users/praneta/Downloads/dataset/user.json",database,"userCharlotte");
 			databaseOperations.insert("/Users/praneta/Downloads/dataset/tip.json",database,"tipCharlotte");
 			databaseOperations.insert("/Users/praneta/Downloads/dataset/review.json",database,"reviewCharlotte");
-
+			databaseOperations.insert("/Users/praneta/Downloads/dataset/review.json", database, "testCollection");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -58,8 +59,8 @@ public class DatabaseOperations {
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 			String str1;
 			DBCollection collection = db.getCollection(collectionName);
-			DBCollection testCollection=db.getCollection("testCollection");
-			String inputString = "2016-01-01";
+			//DBCollection testCollection=db.getCollection("testCollection");
+			String inputString = "2015-01-01";
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date inputDate = dateFormat.parse(inputString);
 			while ((str1 = br.readLine()) != null)
@@ -72,7 +73,7 @@ public class DatabaseOperations {
 						if(res.equals("Charlotte"))
 						{	
 							int count=(int)bson.get("review_count");
-							if(count>150)
+							if(count>=100)
 							{
 								BasicDBList category=(BasicDBList) bson.get("categories");
 								for(Object obj:category) {
@@ -82,36 +83,51 @@ public class DatabaseOperations {
 											collection.insert(bson);
 											break;
 									}
-								}
-								
+								}	
 							}	
 						}
 					}
-					if(collectionName=="review1") {
+					else if(collectionName=="review1") {
 						String key=(String) bson.get("business_id");
 						if(business_id.contains(key)){
-							user_id.add((String) bson.get("user_id"));
+							String key1=(String) bson.get("user_id");
+							if(user_id.containsKey(key1))
+							{
+								user_id.put(key1,user_id.get(key1)+1);
+							}
+							else
+								user_id.put(key1,1);
 							collection.insert(bson);
 						}
 					}
-					if(collectionName=="reviewCharlotte") {
+					else if(collectionName=="reviewCharlotte") {
 						Date dbDate=dateFormat.parse((String) bson.get("date"));
 						String key=(String) bson.get("business_id");
-						if(user_id.contains((String) bson.get("user_id"))&&business_id.contains(key)){
-							if(dbDate.compareTo(inputDate)<0)
+						if(user_id_for_review.contains((String) bson.get("user_id"))&&business_id.contains(key)){
+							if(dbDate.compareTo(inputDate)<0) {
 								collection.insert(bson);
-							else
-								testCollection.insert(bson);
+								business_test.add(key);
+							}
 						}
 					}
-					if(collectionName=="userCharlotte") {
-						int count=(int)bson.get("review_count");
-						if(user_id.contains((String) bson.get("user_id"))&& count >180){
-							user_id_for_review.add((String) bson.get("user_id"));
-							collection.insert(bson);
+					else if(collectionName=="testCollection") {
+						Date dbDate=dateFormat.parse((String) bson.get("date"));
+						String key=(String) bson.get("business_id");
+						if(user_id_for_review.contains((String) bson.get("user_id"))&&business_test.contains(key)){
+							if(dbDate.compareTo(inputDate)>0)
+								collection.insert(bson);
 						}
 					}
-					if(collectionName=="tipCharlotte") {
+					else if(collectionName=="userCharlotte") {
+						String userKey=(String) bson.get("user_id");
+						if(user_id.containsKey(userKey)){
+							if(user_id.get(userKey)>=20) {
+								user_id_for_review.add((String) bson.get("user_id"));
+								collection.insert(bson);
+							}
+						}
+					}
+					else if(collectionName=="tipCharlotte") {
 						if(user_id_for_review.contains((String) bson.get("user_id"))){
 							collection.insert(bson);
 						}

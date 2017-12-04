@@ -99,15 +99,14 @@ public class GetData {
 			DB database = mongoClient.getDB("yelp_db");
 			DBCollection collection =   database.getCollection("reviewCharlotte");
 			DBCursor dbcursor=collection.find();
-			PrintWriter pw1 =new PrintWriter(new File("groundTruthIR.csv"));
+			int count=0;
 			while(dbcursor.hasNext()){
 				String reviewString=dbcursor.next().toString();
 				Review review=gson.fromJson(reviewString, Review.class);
 				float rating=Float.parseFloat(review.getStars());
-				if(rating==5) {
+//				if(rating>=3.5) {
 					String id=review.getUser_id();
-					String text=id+","+review.getBusiness_id();
-					pw1.write(text);
+					count++;
 					if(userReviewMap.get(id)==null) {
 						List<String> list=new ArrayList<String>();
 						list.add(review.getText());
@@ -116,17 +115,14 @@ public class GetData {
 					else {
 						userReviewMap.get(id).add(review.getText());
 					}
-				}
-				pw1.close();
+					if(count==100)
+						break;
+//				}
 			}
 			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}
 		return userReviewMap;
 	}
 }
