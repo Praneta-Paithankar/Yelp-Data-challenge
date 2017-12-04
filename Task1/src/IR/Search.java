@@ -21,7 +21,9 @@ import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.apache.lucene.store.FSDirectory;
 
 import Data.GetData;
-
+/*
+ * created by Praneta Paithankar(ppaithan)
+ */
 public class Search {
 	static float total_doc ;
 
