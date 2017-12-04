@@ -1,4 +1,7 @@
 package CollabFiltering;
+/*
+ * created by Aishwarya Dhage(adhage)and Praneta Paithankar(ppaithan)
+ */
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -110,16 +113,16 @@ public class ItemBasedRecommendation  {
 	}
 
 	//evaluation using mahout
-	private static void evaluation(RecommenderBuilder recommenderBuilder, DataModel dm) throws TasteException 
-	{	
-		RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();        
-	    double score = evaluator.evaluate(recommenderBuilder, null, dm, 0.7, 1.0);    
-	    System.out.println("RMSE: " + score);
-	    RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();        
-	    IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder, null, dm, null, 10, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 0.7);
-	    // evaluate precision recall at 10		        
-	    System.out.println("Precision: " + stats.getPrecision());
-	    System.out.println("Recall: " + stats.getRecall());
-	    System.out.println("F1 Score: " + stats.getF1Measure());                
-	}
+//	private static void evaluation(RecommenderBuilder recommenderBuilder, DataModel dm) throws TasteException 
+//	{	
+//		RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();        
+//	    double score = evaluator.evaluate(recommenderBuilder, null, dm, 0.7, 1.0);    
+//	    System.out.println("RMSE: " + score);
+//	    RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();        
+//	    IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder, null, dm, null, 10, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 0.7);
+//	    // evaluate precision recall at 10		        
+//	    System.out.println("Precision: " + stats.getPrecision());
+//	    System.out.println("Recall: " + stats.getRecall());
+//	    System.out.println("F1 Score: " + stats.getF1Measure());                
+//	}
 }

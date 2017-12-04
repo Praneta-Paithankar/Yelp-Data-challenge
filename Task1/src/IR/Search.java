@@ -49,7 +49,7 @@ public class Search {
 				for(String nReview:nounReview) {
 					if(nReview != null && !nReview.isEmpty()) {
 						query = parser.parse(QueryParser.escape(nReview));
-						topDocs = searcher.search(query, 100);
+						topDocs = searcher.search(query, 25);
 						docs = topDocs.scoreDocs;
 						for (int i = 0; i < docs.length; i++) {		
 								Document doc = searcher.doc(docs[i].doc);
