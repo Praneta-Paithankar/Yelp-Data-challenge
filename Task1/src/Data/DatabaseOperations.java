@@ -39,12 +39,12 @@ public class DatabaseOperations {
 			MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
 			DB database = mongoClient.getDB("yelp_db");
 			DatabaseOperations databaseOperations=new DatabaseOperations();
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/business.json",database,"businessCharlotte");
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/review.json",database,"review1");
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/user.json",database,"userCharlotte");
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/tip.json",database,"tipCharlotte");
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/review.json",database,"reviewCharlotte");
-			databaseOperations.insert("/Users/praneta/Downloads/dataset/review.json", database, "testCollection");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/business.json",database,"businessCharlotte");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/review.json",database,"review1");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/user.json",database,"userCharlotte");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/tip.json",database,"tipCharlotte");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/review.json",database,"reviewCharlotte");
+			databaseOperations.insert("/Users/aishwarya/Downloads/dataset/review.json", database, "testCollection");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
