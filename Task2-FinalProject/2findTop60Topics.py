@@ -1,3 +1,6 @@
+#
+# Created by Nawaz Hussain Khazielakha
+#
 from pymongo import MongoClient
 import nltk
 from nltk import WordNetLemmatizer

@@ -5,6 +5,10 @@ import nltk
 from nltk import WordNetLemmatizer
 from nltk.corpus import stopwords
 from pymongo import MongoClient
+#
+# Created by Nawaz Hussain Khazielakha
+#
+
 # get cursors of the collections
 my_reviews_collection = MongoClient("mongodb://localhost:27017/")["yelp_attempt3"]["Reviews"]
 my_business_collection = MongoClient("mongodb://localhost:27017/")["yelp_attempt3"]["Business"]

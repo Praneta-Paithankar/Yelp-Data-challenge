@@ -1,3 +1,6 @@
+#
+# Created by Nawaz Hussain Khazielakha
+#
 1. extract the most referred nouns and plurals from the reviews from the users
     visiting the city Charlotte.
 2. Based on the rating/stars of each restaurant, we calculate the popularity/weight
