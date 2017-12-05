@@ -17,9 +17,14 @@ public class Evaluation {
 		EvalrecomsimMap.putAll(ItemBasedRecommendation.RrecomsimMap);
 		int hitrate=0;
 		int totalbusinessR=0;
-		int totalbusinessP=0;		
+		int totalbusinessP=0;	
+		float mape= 0;
+		int allrecommendedbusiness=0;
+		int allactualbusiness=0;
+		int i=0;
 		for(String user:EvalrecomsimMap.keySet())
 		{
+			int hits=0;
 			if(EvalgroundTruthMap.containsKey(user))
 			{
 				for(String abusiness:EvalgroundTruthMap.get(user))
@@ -27,13 +32,20 @@ public class Evaluation {
 					if(EvalrecomsimMap.get(user).contains(abusiness))
 					{
 						hitrate+=1;
+						hits+=1;
 					}
-				}		
-				totalbusinessR+=(EvalgroundTruthMap.get(user)).size();
-				totalbusinessP+=(EvalrecomsimMap.get(user)).size();
+				}
+				i+=1;
+				allrecommendedbusiness=(EvalrecomsimMap.get(user)).size();
+				allactualbusiness=(EvalgroundTruthMap.get(user)).size();
+				mape+=((float)(allactualbusiness-hits)/allactualbusiness);
+				totalbusinessR+=allactualbusiness;
+				totalbusinessP+=allrecommendedbusiness;
 			}
 		}
+		int n=EvalgroundTruthMap.size();
 		System.out.println("Recall: "+(float)hitrate/totalbusinessR);
-		System.out.println("Precision: "+(float)hitrate/totalbusinessP);		
+		System.out.println("Precision: "+(float)hitrate/totalbusinessP);
+		System.out.println("MAPE: "+(float)(mape*100)/i);		
 	}
 }
