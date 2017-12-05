@@ -62,8 +62,12 @@ public class Evaluation {
 		int retrievedDocument=0;
 		int relevantDocument=0;
 		int totalRelevant=0;
+		double sum=0.0;
+		int n=0;
 		for(String user:userBusinessMap.keySet())
 		{
+			relevantDocument=0;
+			totalRelevant=0;
 			if(groundTruthMap.get(user)!=null) {
 				retrievedDocument+=userBusinessMap.get(user).size();
 				for(String business_id:userBusinessMap.get(user))
@@ -77,7 +81,10 @@ public class Evaluation {
 				}
 				totalRestaurant+=groundTruthMap.get(user).size();
 				totalRelevant+=groundTruthMap.get(user).size();
+				sum+=((double)(totalRelevant-relevantDocument)/totalRelevant);
+				n++;
 			}
+			
 		}
 		System.out.println("commonRestaurant "+commonRestaurant);
 		System.out.println("totalRestaurant "+totalRestaurant);
@@ -92,12 +99,14 @@ public class Evaluation {
 		System.out.println("totalRelevant"+totalRelevant);
 		if(retrievedDocument!=0)
 		{
-			double res = (double) ((double)relevantDocument/retrievedDocument);
+			double res = (double) ((double)commonRestaurant/retrievedDocument);
 			
 			System.out.println("Precision"+ res);
 		}
 		if(totalRelevant!=0)
-			System.out.println("Recall"+(double) ((double)relevantDocument/totalRelevant));
+			System.out.println("Recall"+(double) ((double)commonRestaurant/totalRestaurant));
+		double res=sum/n;
+		System.out.println("MAPE"+res*100);
 		
 	}
 
