@@ -15,6 +15,7 @@ import opennlp.tools.tokenize.TokenizerModel;
  * created by Aishwarya Dhage(adhage) and Praneta Paithankar(ppaithan)
  */
 public class ReviewExtractor {
+	//extract noun reviews from list of string
 	public List<String> getNouneview(List<String> originalReview) {
 		InputStream tokenModelIn = null;
 		InputStream posModelIn = null;
@@ -68,7 +69,7 @@ public class ReviewExtractor {
 		}
 		return result;
 	}
-
+	//extract noun reviews from review string
 	public String getNouneview(String review) {
 		InputStream tokenModelIn = null;
 		InputStream posModelIn = null;
