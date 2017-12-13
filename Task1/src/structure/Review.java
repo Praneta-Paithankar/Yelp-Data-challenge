@@ -4,6 +4,7 @@ import java.util.Date;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class Review {
 	private String  review_id;
 	private String user_id;
