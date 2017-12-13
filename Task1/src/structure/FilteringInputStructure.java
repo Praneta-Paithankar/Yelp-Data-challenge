@@ -4,7 +4,7 @@ package structure;
  */
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+//Pojo class
 public class FilteringInputStructure {
 	private String user_id;
 	private String business_id;
