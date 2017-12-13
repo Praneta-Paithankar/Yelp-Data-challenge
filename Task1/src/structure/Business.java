@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class Business {
 	private String business_id;
 	private String name;
@@ -19,7 +20,7 @@ public class Business {
 	private int is_open;
     
 	private Attributes attributes;
-    // object, business attributes to values. note: some attribute values might be objects
+    
  
 
    private String [] categories;
