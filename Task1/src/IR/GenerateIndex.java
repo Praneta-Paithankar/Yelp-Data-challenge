@@ -23,7 +23,7 @@ import org.apache.lucene.store.FSDirectory;
 import Data.GetData;
 
 public class GenerateIndex {
-	//create restauarant document
+	//create restaurant document
 	public static Document createDocument(String docid,String text) {
 
 		Document doc = new Document();
