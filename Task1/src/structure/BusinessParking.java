@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class BusinessParking {
 	private String street;
     private String garage;
