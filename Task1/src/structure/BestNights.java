@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class BestNights {
 	private boolean Monday;
 	private boolean Tuesday;
