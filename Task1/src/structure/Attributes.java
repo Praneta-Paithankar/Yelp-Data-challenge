@@ -2,6 +2,8 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
+
 public class Attributes {
 	
 	private boolean CoatCheck;
