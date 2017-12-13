@@ -12,6 +12,7 @@ import java.util.List;
  * created by Aishwarya Dhage(adhage) and  Praneta Paithankar(ppaithan)
  */
 public class Evaluation {
+	//Evaluate precision,relevance, and MAPE
 	public static void main(String[]args) {
 		Path csvFile = Paths.get(System.getProperty("user.dir"),"IR.csv");
 		String line = "";
