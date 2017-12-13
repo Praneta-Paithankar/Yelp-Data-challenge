@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class Music {
 	private boolean dj;
 	private boolean background_music;
