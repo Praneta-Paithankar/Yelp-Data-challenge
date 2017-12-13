@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class HairSpecializesIn {
 	private boolean coloring;
 	private boolean africanamerican;
