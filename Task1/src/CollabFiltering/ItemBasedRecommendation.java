@@ -1,6 +1,7 @@
 package CollabFiltering;
 /*
  * created by Aishwarya Dhage(adhage)and Praneta Paithankar(ppaithan)
+ *Implements collaborative filtering algorithm.
  */
 
 import java.io.BufferedReader;
