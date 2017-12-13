@@ -21,6 +21,7 @@ import structure.Review;
 
 /*
  * created by Praneta Paithankar(ppaithan)
+ * get data. from database
  */
 public class GetData {
 
@@ -46,7 +47,7 @@ public class GetData {
 		} 
 		return set;
 	}
-
+	// write data into csv file
 	public  void writeToCsv(String fileName,List<FilteringInputStructure> set) {
 
 		String recordAsCsv = set.stream()
@@ -62,6 +63,7 @@ public class GetData {
 			e.printStackTrace();
 		}
 	}
+	//get data required for IR
 	public  HashMap<String,String>getIRData() {
 		HashMap<String,String> businessReviewMap=new HashMap<String,String>();
 		try {
@@ -90,7 +92,7 @@ public class GetData {
 		} 
 		return businessReviewMap;
 	}
-
+	//get user data required for IR
 	public  HashMap<String,List<String>>getIRUserData() {
 		HashMap<String,List<String>> userReviewMap=new HashMap<String,List<String>>();
 		try {
