@@ -26,6 +26,7 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 /*
  * created by Praneta Paithankar(ppaithan)
+ * Store json data into mongodb
  */
 public class DatabaseOperations {
 
