@@ -7,6 +7,7 @@ import structure.FilteringInputStructure;
  * created by Praneta Paithankar(ppaithan)
  */
 public class StoreCFData {
+	//Store data into database
 	public static void main(String[]args) {
 		GetData data=new GetData();
 		List<FilteringInputStructure> trainingSet = data.getData("reviewCharlotte");
