@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class Tip {
 	private String text;
 	private String date;
