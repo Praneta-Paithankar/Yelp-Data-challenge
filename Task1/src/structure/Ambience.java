@@ -2,6 +2,7 @@ package structure;
 /*
  * created by Praneta Paithankar(ppaithan)
  */
+//Pojo class
 public class Ambience {
 	private boolean hipster;
 	private boolean classy;
