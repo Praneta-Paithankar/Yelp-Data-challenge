@@ -26,7 +26,7 @@ import Data.GetData;
  */
 public class Search {
 	static float total_doc ;
-
+	//Parse review as query to find relevance 
 	public static void main(String[] args) {
 		try {
 			GetData  data=new GetData();
