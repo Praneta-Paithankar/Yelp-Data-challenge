@@ -1,6 +1,7 @@
 package CollabFiltering;
 /*
  * created by Aishwarya Dhage(adhage)and Praneta Paithankar(ppaithan)
+ *Converts string user and business ids into long datatype.
  */
 
 import java.io.BufferedReader;
