@@ -1,6 +1,7 @@
 package CollabFiltering;
 /*
  * created by Aishwarya Dhage(adhage)and Praneta Paithankar(ppaithan)
+ *Calculate precision, recall and MAPE of recommendations.
  */
 
 import java.util.Collection;
